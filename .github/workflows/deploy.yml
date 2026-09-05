@@ -1,4 +1,4 @@
-name: CI Node.js a Render
+name: CI Node.js y Deploy a Render
 
 on:
   push:
@@ -7,32 +7,29 @@ on:
 jobs:
   test:
     name: Ejecutar pruebas
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Descargar código
-    - uses: actions/checkout@v4
+      - name: Descargar código
+        uses: actions/checkout@v4
 
-    - name: Instalar Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-    - name: Instalar dependencias
-      run: npm install
+      - name: Instalar dependencias
+        run: npm install
 
-    - name: Ejecutar pruebas
-      run: npm test
+      - name: Ejecutar pruebas
+        run: npm test
 
-deploy:
+  deploy:
     name: Desplegar en Render
-
     needs: test
-
     runs-on: ubuntu-latest
 
     steps:
-    - name: Ejecutar Deploy Hook de Render
-      run: |
-        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+      - name: Ejecutar Deploy Hook de Render
+        run: |
+          curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
